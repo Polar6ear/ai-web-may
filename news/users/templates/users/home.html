@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+{% block title %}HOME{% endblock title %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">NEWSPAPER APP</h1>
+        <p class="lead">A NEWSPAPER WEBSITE BUILD WITH DJANGO</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{% url 'article_list' %}" role="button">VIEW ALL ARTICLES</a>
+        </p>
+    </div>
+{% endblock content%}
