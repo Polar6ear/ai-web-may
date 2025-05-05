@@ -1,0 +1,9 @@
+# Ignore system files
+.DS_Store
+
+# Ignore image files
+*.jpg
+*.png
+
+# Ignore any unnecessary project files
+*.log
