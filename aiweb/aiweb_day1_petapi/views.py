@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from .models import Pet
 from .serializers import PetSerializers
 from rest_framework.response import Response
@@ -9,38 +9,68 @@ from django.http import Http404
 # Create your views here.
 
 # Viewsets = views + serializers + routers are used
+from rest_framework import viewsets
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-_________________
-# GENERICS
-___________________
-
-from rest_framework import mixins, generics # generic ==> handel kr dega sb import convert krna serialize krna status vagera baaki update ka kaam krega < == mixins
-
-class Pets(generics.ListCreateAPIView):
+class PetViewset(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializers
+# class PetViewset(viewsets.ViewSet):
+#     def list(self, request):
+#         queryset = Pet.objects.all()
+#         serializer = PetSerializers(queryset, many=True)
+#         return Response(serializer.data)
+#
+#     def create(self, request):
+#         serializer = PetSerializers(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors)
+#
+#     def retrieve(self, request, pk=None):
+#         pet = get_object_or_404(Pet, pk=pk)
+#         serializer = PetSerializers(pet)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def update(self, request, pk=None):
+#         pet = get_object_or_404(Pet, pk=pk)
+#         serializer = PetSerializers(pet)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors)
+#
+#     def delete(self, request, pk=None):
+#         pet = get_object_or_404(Pet, pk=pk)
+#         pet.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+#
 
-class PetDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Pet.objects.all()
-    serializer_class = PetSerializers
-    lookup_field = 'pk'  # based on what we want to check
 
-"""
+
+
+
+
+
+
+# """
+# _________________
+# # GENERICS
+# ___________________
+#
+# from rest_framework import mixins, generics # generic ==> handel kr dega sb import convert krna serialize krna status vagera baaki update ka kaam krega < == mixins
+#
+# class Pets(generics.ListCreateAPIView):
+#     queryset = Pet.objects.all()
+#     serializer_class = PetSerializers
+#
+# class PetDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Pet.objects.all()
+#     serializer_class = PetSerializers
+#     lookup_field = 'pk'  # based on what we want to check
+#
+# """
 
 
 
