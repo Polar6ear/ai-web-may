@@ -6,12 +6,14 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
-openai = "*"
 pillow = "*"
 jupyterlab = "*"
 matplotlib = "*"
 pandas = "*"
 scikit-learn = "*"
+langchain = "*"
+openai = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
