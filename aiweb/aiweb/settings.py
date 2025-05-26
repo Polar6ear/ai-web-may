@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'aiweb_day1_petapi',
+    'aichat',
+    'petId',
 ]
 
 MIDDLEWARE = [

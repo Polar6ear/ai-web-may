@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🐾 AI Pet Advisor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #111;
+      padding: 30px 25px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 24px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      background-color: #222;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      background-color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 25px;
+    }
+
+    button:hover {
+      background-color: #ccc;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #responseBox {
+      padding: 15px;
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      font-size: 15px;
+      min-height: 80px;
+      white-space: pre-wrap;
+    }
+  </style>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie("csrftoken");
+
+    function askAI() {
+      const userInput = document.getElementById("userInput").value;
+      const responseBox = document.getElementById("responseBox");
+
+      responseBox.innerText = "Thinking...";
+
+      fetch("/api/ai/pet-advice/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({ query: userInput }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          responseBox.innerText = data.response;
+        })
+        .catch((err) => {
+          responseBox.innerText = "❌ Error contacting AI.";
+          console.error("Error:", err);
+        });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>🐾 Ask AI for Pet Advice</h1>
+    <input type="text" id="userInput" placeholder="e.g. How to care for a puppy?">
+    <button onclick="askAI()">Ask AI</button>
+
+    <h3>AI Response:</h3>
+    <div id="responseBox"></div>
+  </div>
+</body>
+</html>

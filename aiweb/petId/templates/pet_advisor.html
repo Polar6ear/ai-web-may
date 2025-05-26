@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pet Advisor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fb;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    #chatContainer {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    #chatBox {
+      height: 300px;
+      overflow-y: auto;
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .msg {
+      margin: 10px 0;
+    }
+    .user {
+      color: blue;
+    }
+    .bot {
+      color: green;
+    }
+    #loading {
+      display: none;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatContainer">
+    <h2>🐾 Pet Advisor</h2>
+    <div id="chatBox"></div>
+    <div id="loading">⏳ Thinking...</div>
+    <input type="text" id="userInput" placeholder="Ask your pet question..." />
+    <button onclick="send()">Ask</button>
+    <label>
+      <input type="checkbox" id="expertToggle" />
+      Use Expert Mode
+    </label>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chatBox");
+    const loading = document.getElementById("loading");
+
+    function addMessage(text, sender) {
+      const msg = document.createElement("div");
+      msg.className = "msg " + sender;
+      msg.innerText = (sender === "user" ? "You: " : "AI: ") + text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function send() {
+      const input = document.getElementById("userInput").value.trim();
+      const expertMode = document.getElementById("expertToggle").checked;
+      const endpoint = expertMode
+    const endpoint = expertMode
+      ? "https://8669-223-233-64-37.ngrok-free.app/api/ai/pet-expert/"
+      : "https://8669-223-233-64-37.ngrok-free.app/api/ai/pet-advice/";
+
+
+      if (!input) return;
+      addMessage(input, "user");
+      document.getElementById("userInput").value = "";
+      loading.style.display = "block";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ question: input }),
+        });
+
+        const contentType = response.headers.get("content-type");
+
+        if (!contentType || !contentType.includes("application/json")) {
+          const text = await response.text();
+          throw new Error("Server returned HTML instead of JSON:\n" + text.slice(0, 200));
+        }
+
+        const data = await response.json();
+        addMessage(data.answer || data.error || "⚠️ No response", "bot");
+      } catch (err) {
+        addMessage("⚠️ Server error: " + err.message, "bot");
+      } finally {
+        loading.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
