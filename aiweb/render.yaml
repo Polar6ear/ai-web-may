@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ai-pet-api
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn aiweb.wsgi
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: aiweb.settings
+      - key: PYTHON_VERSION
+        value: 3.10
