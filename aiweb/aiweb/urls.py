@@ -28,7 +28,9 @@ urlpatterns = [
     #  API endpoints
     path('api/v1/', include('aiweb_day1_petapi.urls')),
     #path('', include('aichat.urls')),  # <-- Add this line
-    path('', include('petId.urls')),  # <-- Add this line
+    #path('', include('petId.urls')),  # <-- Add this line
+    #path('', include('pet_name_generator.urls')),
+    path('', include('petAI.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

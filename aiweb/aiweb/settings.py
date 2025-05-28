@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'aiweb_day1_petapi',
     'aichat',
     'petId',
+    'pet_name_generator',
+    'petAI',
 ]
 
 MIDDLEWARE = [

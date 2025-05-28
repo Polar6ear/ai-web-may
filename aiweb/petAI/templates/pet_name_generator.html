@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pet Name Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+
+  <div class="p-8 max-w-md w-full bg-white rounded-2xl shadow-xl space-y-6">
+    <h1 class="text-3xl font-bold text-black text-center">🐾 Pet Name Generator</h1>
+
+    <form id="nameForm" class="space-y-4">
+      <input
+        name="pet_info"
+        class="w-full border border-black rounded-lg px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black"
+        placeholder="Describe your pet (e.g. a playful golden retriever)...">
+      <button
+        type="submit"
+        class="w-full bg-black text-white font-semibold px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+      >
+        Generate Names
+      </button>
+    </form>
+
+    <div id="loader" class="text-center text-sm text-gray-700 hidden">✨ Generating names...</div>
+
+    <pre
+      id="output"
+      class="bg-gray-100 rounded-lg p-4 text-black text-sm whitespace-pre-wrap min-h-[60px]"
+    ></pre>
+  </div>
+
+  <script>
+    document.getElementById("nameForm").onsubmit = async (e) => {
+      e.preventDefault();
+      document.getElementById("loader").classList.remove("hidden");
+
+      const pet_info = e.target.pet_info.value;
+      const res = await fetch("/api/pet-name-generator/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pet_info })
+      });
+
+      const data = await res.json();
+      document.getElementById("loader").classList.add("hidden");
+      document.getElementById("output").textContent = data.names;
+    };
+  </script>
+
+</body>
+</html>
